@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id             Int       @id(map: "PK__Contact__3213E83FA1B2822E") @default(autoincrement())
+  phoneNumber    String?   @db.VarChar(255)
+  email          String?   @db.VarChar(255)
+  linkedId       Int?
+  linkPrecedence String?   @db.VarChar(50)
+  createdAt      DateTime  @default(now(), map: "DF__Contact__created__38996AB5") @db.DateTime
+  updatedAt      DateTime  @default(now(), map: "DF__Contact__updated__398D8EEE") @db.DateTime
+  deletedAt      DateTime? @db.DateTime
+  Contact        Contact?  @relation("ContactToContact", fields: [linkedId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__Contact__linkedI__3A81B327")
+  other_Contact  Contact[] @relation("ContactToContact")
+}
